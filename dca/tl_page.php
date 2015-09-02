@@ -42,11 +42,19 @@ if ($GLOBALS['TL_DCA']['tl_page']['fields']['type']['save_callback'][0][1] == 'c
 {
 	$GLOBALS['TL_DCA']['tl_page']['fields']['type']['save_callback'][0][0] = 'tl_page_folderpage';
 }
+// FIX ALIAS GENERATING IN COMBO WITH FOLDERPAGE
+$GLOBALS['TL_DCA']['tl_page']['fields']['alias']['save_callback'][] = array('tl_page_folderpage', 'cleanAlias');
 
 
 class tl_page_folderpage extends tl_page
 {
-
+	/**
+	 * clean alias if there'll be to slashes while empty alias
+	 */
+	public function cleanAlias($varValue, DataContainer $dc){
+		return str_replace('//','/',$varValue);
+	}
+	
 	/**
 	 * Override the default breadcrumb menu, we want to show pages before root pages
 	 */
